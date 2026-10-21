@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hanzi Cards</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="theme-color" content="#8c1c13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hanzi">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+<header id="bar" hidden>
+  <button id="back" class="quiet">&lsaquo; Back</button>
+  <button id="help-btn" class="quiet round" aria-label="Help" aria-haspopup="dialog" aria-expanded="false" hidden>?</button>
+</header>
+
+<div id="help" class="help" role="dialog" aria-label="Help" hidden>
+</div>
+
+<button id="update" class="update" hidden>Update available. Tap to reload.</button>
+
+<main id="home-view" class="home">
+  <button id="go-guess" class="home-item">Guess <small id="sub-guess"></small></button>
+  <button id="go-recall" class="home-item">Recall <small id="sub-recall"></small></button>
+  <button id="go-listen" class="home-item">Listen <small id="sub-listen"></small></button>
+  <div class="quiet-row">
+    <button id="go-words" class="home-item quiet-item">All words <small>Search and listen</small></button>
+    <button id="go-add" class="home-item quiet-item">Add words <small id="sub-add"></small></button>
+  </div>
+  <label class="lesson-row">Lesson <select id="lesson" aria-label="Lesson filter"></select></label>
+</main>
+
+<main id="card-view" hidden>
+  <section id="card" tabindex="0" aria-live="polite">
+    <div id="listen-icon" class="listen-icon" aria-hidden="true" hidden>&#128266;</div>
+    <div id="zh" class="zh"></div>
+    <div id="py" class="py"></div>
+    <div id="en" class="en"></div>
+    <div class="tap-hint" id="tap-hint">Tap to reveal</div>
+  </section>
+  <div id="actions" class="actions">
+    <button id="miss" class="grade" aria-label="Missed">&larr; Missed</button>
+    <button id="speak" class="icon" aria-label="Play audio">&#128266;</button>
+    <button id="ok" class="grade" aria-label="Skip">&rarr;</button>
+  </div>
+  <section id="done" class="done" hidden>
+    <div id="done-title" class="done-title"></div>
+    <div id="done-sub" class="done-sub"></div>
+  </section>
+</main>
+
+<main id="add-view" hidden>
+  <form id="add-form" novalidate>
+    <input id="f-zh" class="zh-input" lang="zh-Hans" placeholder="Chinese" autocomplete="off">
+    <input id="f-py" placeholder="Pinyin (optional)" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+    <input id="f-en" placeholder="English (optional)" autocomplete="off" autocapitalize="none">
+    <input id="f-lesson" list="lesson-options" placeholder="Lesson (optional)" autocomplete="off">
+    <datalist id="lesson-options"></datalist>
+    <div class="form-row">
+      <button id="f-submit" type="submit" class="primary">Add</button>
+      <button id="f-cancel" type="button" class="quiet" hidden>Cancel</button>
+    </div>
+    <p id="f-msg" class="msg" role="status"></p>
+  </form>
+
+  <details class="bulk">
+    <summary>Bulk import</summary>
+    <p class="hint">One word per line: Chinese, Pinyin, English, Lesson. Only Chinese is required. Rows without a lesson stay unassigned.</p>
+    <textarea id="bulk-text" rows="6" aria-label="Words to import" spellcheck="false"></textarea>
+    <div class="form-row">
+      <button id="bulk-go" type="button" class="primary">Import</button>
+      <label class="quiet file-btn">Choose file<input id="bulk-file" type="file" accept=".csv,.txt,text/csv,text/plain" hidden></label>
+    </div>
+    <p id="bulk-msg" class="msg" role="status"></p>
+  </details>
+
+  <section id="inbox" hidden>
+    <h2>Waiting for the Mac <span id="inbox-count"></span></h2>
+    <ul id="inbox-list"></ul>
+    <div class="form-row">
+      <button id="export" type="button" class="primary">Export</button>
+      <button id="copy" type="button" class="quiet">Copy as text</button>
+    </div>
+    <div id="exported-row" class="form-row" hidden>
+      <span id="exported-msg"></span>
+      <button id="clear" type="button" class="quiet">Clear inbox</button>
+    </div>
+    <p id="inbox-msg" class="msg" role="status"></p>
+  </section>
+</main>
+
+<main id="list-view" hidden>
+  <input id="search" type="search" placeholder="Search character, pinyin or English" autocomplete="off">
+  <div class="counter"><span id="list-count"></span></div>
+  <ul id="list"></ul>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

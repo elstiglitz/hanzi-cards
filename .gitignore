@@ -1,0 +1,9 @@
+.venv/
+.DS_Store
+__pycache__/
+
+# Data/: only the formatted word list is published; everything else (source material, work in progress) stays local
+Data/*
+!Data/Formatted data/
+Data/Formatted data/*
+!Data/Formatted data/Words.csv
