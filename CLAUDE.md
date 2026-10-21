@@ -13,11 +13,27 @@ Personal Mandarin flashcard app (PWA, offline, iPhone). Vocabulary source: `Data
 - The user likes minimalist user interfaces. Show only what is needed by default; keep secondary controls, instructions and options hidden until requested (menus, popovers, on-demand panels). Prefer icons over labels, few colours, generous whitespace. Challenge any addition that adds visible clutter.
 
 ## Status (update after each step)
-Build plan: see `PLAN.md`. Done: steps 1-7 (data build, card viewer, three study modes, grading + spaced repetition + lesson filter, add words / bulk import / inbox / export, manifest + icons + service worker, deployed). Offline install on iPhone has been tested and works, including audio. Step 8 built: `tools/merge_inbox.py` (tested on a copy with a fake export; not yet run on a real phone export). Next: do the real phone -> Mac -> phone round trip with the first exported inbox.
+The app is finished, live and in use. All 8 steps of `PLAN.md` are done: data build, card viewer, three study modes (Guess / Recall / Listen), grading + spaced repetition + lesson filter, add words / bulk import / inbox / export, offline PWA with service worker, deployment, and the Mac-side merge tool. The full loop has been proven on a real phone: add a word on the phone, export, `merge_inbox.py`, audio, rebuild, push, "Update available" on the phone. The deck has 565 words (563 `Year 1`, 2 `Year 2`: 长城, 故宫), 558 with audio.
+
+Next steps, in the order I suggested (the user has not picked yet):
+1. Back up study progress (export/import). Progress lives only in the phone's browser storage; if iOS clears it or the phone changes, weeks of study are lost. Most important gap.
+2. iPhone gestures (see Backlog).
+3. Spot-check audio pronunciation of tricky words (neutral tones like 妈妈; 还行; 玩儿). Never done.
+4. Smaller items in the Backlog. Suggested approach for the user: use the app for a few days first and let real use decide.
+
+Lessons learned (do not repeat):
+- Phones only update when `sw.js` itself changes. The build script stamps the version into it; always run the data build before committing a change to `docs/`.
+- Never run `open <url>` after an edit: it reloads the user's browser to the home screen and looks like an app bug.
+- Test update paths and anything browser-specific for real; unit tests of the logic missed the update bug.
+- Unverified claims: say so. Many checks here only ran in simulation, not in a browser.
+
+Unverified or open:
+- Two-factor on the GitHub account (cannot be seen from here).
+- Old commits are still fetchable by hash on GitHub after the history rewrite. Only GitHub support can purge them. The wording is mild; left as is unless the user asks.
 
 ## Live app
 - Repo: https://github.com/elstiglitz/hanzi-cards (public). App: https://elstiglitz.github.io/hanzi-cards/ (GitHub Pages serves `docs/` from `main`).
-- `main` is a single clean commit, published on purpose so old notes with personal details are not public. The full local history is on the local-only branch `backup-full-history`; never push it.
+- `main` is a single clean commit, published on purpose so old notes with personal details are not public. Full local history is on the local-only branches `backup-full-history` (older, contains personal details) and `backup-before-squash`; never push either. Repeat the squash approach (orphan branch, check, `git push --force-with-lease`) only if something private is ever published by mistake.
 - Keep personal details (names, job, other accounts, local paths) out of every tracked file, including this one: the repo is public.
 - Deploy an update: edit, run the data build (below), commit, then push to `main` (ask first, it is public). Phones show "Update available" next time they open the app online.
 - Progress and the inbox live in each browser's storage (per address), so the phone, the Mac preview and the live site on the Mac are all separate.
@@ -37,7 +53,7 @@ Build plan: see `PLAN.md`. Done: steps 1-7 (data build, card viewer, three study
 ## Decisions
 - PWA on iPhone via Add to Home Screen, offline. Hosting: GitHub Pages from a public repo (vocabulary and audio become public; ask before pushing).
 - Audio: pre-generated MP3s, Microsoft voice zh-CN-XiaoxiaoNeural via edge-tts. Keyed by `hanzi|pinyin`. No audio for the 6 radicals (氵 辶 钅 纟 亻 讠) and the suffix 子 (zi). Radicals stay in the deck on purpose (they help the user learn meanings).
-- `Words.csv` columns: Chinese, Pinyin, English, Lesson. All words are `Year 1` for now. `Year 1 - detailed.csv` is the user's own reviewed file, kept in case they change their mind; do not use it unless asked. One pinyin reading per word (还 = hái, 玩儿 = wánr). Words joined, phrases spaced.
+- `Words.csv` columns: Chinese, Pinyin, English, Lesson. Original words are `Year 1`; words added since get the lesson given at import (e.g. `Year 2`). `Year 1 - detailed.csv` is the user's own reviewed file, kept in case they change their mind; do not use it unless asked. One pinyin reading per word (还 = hái, 玩儿 = wánr). Words joined, phrases spaced.
 - Modes: Guess (see character; hint = pinyin), Recall (see English; no hint), Listen (autoplay audio; hint = pinyin; 7 no-audio words excluded). Shuffled by default, S toggles.
 - Up arrow per card: Guess = hint, audio, answer; Listen = hint, answer; Recall = answer; after the answer it replays the audio. Down hides the hint. Space plays audio. Return reveals.
 - Grading replaces prev/next: before the answer, right arrow skips (no grade); after it, right = got it, left = missed. Leitner boxes 1/2/4/8/16 days; a hint moves the card back a box; progress is per word AND per mode, saved in localStorage; 10 new cards a day per mode; due cards first. Missed cards come back later in the same session without a second schedule change.

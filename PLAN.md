@@ -1,6 +1,6 @@
 # Plan: Mandarin flashcard PWA
 
-Status: draft for review. No app code written yet.
+Status: all 8 steps are built and deployed (see CLAUDE.md for current status and next steps). This file is the original plan and is not kept up to date.
 
 ## Decisions already made
 - PWA installed on iPhone via Add to Home Screen, fully offline.
