@@ -33,6 +33,8 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 .help h2 { margin: 0 0 8px; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .help ul { margin: 0 0 14px; padding: 0; list-style: none; }
 .help li { margin: 6px 0; }
+.help-actions { display: flex; gap: 8px; margin-bottom: 4px; }
+.help-actions button { padding: 6px 12px; font-size: .85rem; }
 .key-row { display: flex; justify-content: space-between; gap: 12px; margin: 6px 0; }
 
 /* update banner */
@@ -54,7 +56,11 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
   background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
   min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 18px; padding: 24px; text-align: center; cursor: pointer; user-select: none;
+  position: relative; touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none;
 }
+#card.armed { border-color: var(--accent); }
+#card[data-cue]::after { content: attr(data-cue); position: absolute; top: 14px; right: 18px; font-size: 2rem; color: var(--accent); }
+body { overscroll-behavior: none; }
 .zh { font-size: clamp(3.5rem, 18vw, 6.5rem); line-height: 1.1; word-break: keep-all; }
 .zh.long { font-size: clamp(2rem, 9vw, 3.2rem); }
 .py { font-size: 1.6rem; color: var(--accent); min-height: 1.6em; }
