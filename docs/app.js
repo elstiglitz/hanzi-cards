@@ -231,6 +231,7 @@ function route() {
   $('back').hidden = name === '';
   $('brand').hidden = name !== '';
   $('bar').classList.toggle('home-bar', name === '');
+  document.body.classList.toggle('on-home', name === '');
   $('menu-btn').hidden = name !== '';
   setMenu(false);
   $('help-btn').hidden = !isMode;
