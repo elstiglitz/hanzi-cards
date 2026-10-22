@@ -1,8 +1,8 @@
 /* One red family. Light and dark share the same variable names. */
 :root {
-  --bg: #f7eee7; --surface: #fff9f5; --text: #3a1713; --muted: #8a5f58; --line: #ead8ce;
+  --bg: #fbf5f0; --surface: #fffaf6; --text: #3a1713; --muted: #8a5f58; --line: #ead8ce;
   --bar: #bc5a49; --on-bar: #fff; --accent: #a3402f; --arrow: #a94a3a; --on-arrow: #fff; --blush: #f3dcd5;
-  --m-guess: #bc5a49; --m-recall: #a04545; --m-listen: #7e2f3b;
+  --m-guess: #f9cfc4; --m-recall: #ecc1c0; --m-listen: #e0c1c8; --m-text: #6b1d1a; --m-sub: #8a4a44; --m-tile: rgba(255,255,255,.6);
   --good-bg: #bc5a49; --good-fg: #fff; --bad-bg: #f3dcd5; --bad-fg: #8e3b30;
   --shadow: 0 2px 12px rgba(120, 40, 30, .08);
   color-scheme: light dark;
@@ -13,14 +13,14 @@
   :root:not([data-theme="light"]) {
     --bg: #1e1311; --surface: #2a1b18; --text: #f4e6e0; --muted: #b79a92; --line: #43302b;
     --bar: #4a1f1b; --on-bar: #f4e6e0; --accent: #ee9a8b; --arrow: #c9604f; --on-arrow: #1e1311; --blush: #3a2420;
-    --m-guess: #b5544a; --m-recall: #96403f; --m-listen: #77303d;
+    --m-guess: #ad5f52; --m-recall: #8a4a45; --m-listen: #6a3744; --m-text: #fff; --m-sub: rgba(255,255,255,.75); --m-tile: rgba(255,255,255,.14);
     --good-bg: #c9604f; --good-fg: #1e1311; --bad-bg: #43231f; --bad-fg: #f0a59a; --shadow: none;
   }
 }
 :root[data-theme="dark"] {
   --bg: #1e1311; --surface: #2a1b18; --text: #f4e6e0; --muted: #b79a92; --line: #43302b;
   --bar: #4a1f1b; --on-bar: #f4e6e0; --accent: #ee9a8b; --arrow: #c9604f; --on-arrow: #1e1311; --blush: #3a2420;
-  --m-guess: #b5544a; --m-recall: #96403f; --m-listen: #77303d;
+  --m-guess: #ad5f52; --m-recall: #8a4a45; --m-listen: #6a3744; --m-text: #fff; --m-sub: rgba(255,255,255,.75); --m-tile: rgba(255,255,255,.14);
   --good-bg: #c9604f; --good-fg: #1e1311; --bad-bg: #43231f; --bad-fg: #f0a59a; --shadow: none;
 }
 * { box-sizing: border-box; }
@@ -66,22 +66,39 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 /* update banner */
 .update { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom) + 16px); z-index: 10; background: var(--arrow); color: var(--on-arrow); border: 0; border-radius: 22px; padding: 12px 20px; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
 
-/* home */
-.home { display: flex; flex-direction: column; height: calc(100dvh - 52px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px); }
-.modes { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+/* home: transparent header with the app mark, intro, lesson card, mode buttons, motto */
+#bar.home-bar { background: linear-gradient(var(--bar) env(safe-area-inset-top), transparent env(safe-area-inset-top)); color: var(--text); }
+#bar.home-bar button.quiet { color: var(--text); }
+.brand { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; font-weight: 600; }
+.logo { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: var(--bar); color: var(--on-bar); font-size: 1.5rem; font-weight: 400; }
+.home { display: flex; flex-direction: column; min-height: calc(100dvh - 52px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px); }
+.intro { padding: 18px 4px 20px; }
+.eyebrow { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.intro h1 { margin: 6px 0 4px; font-size: 2rem; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
+.intro p { margin: 0; color: var(--muted); }
+.lesson-card {
+  position: relative; display: grid; grid-template-columns: 1fr auto; row-gap: 2px; align-items: center;
+  padding: 14px 18px; margin-bottom: 14px; border-radius: 22px; background: var(--blush); box-shadow: var(--shadow);
+}
+.lesson-card .cap { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.lesson-name { grid-column: 1; font-size: 1.1rem; font-weight: 500; }
+.change { grid-column: 2; grid-row: 1 / 3; display: flex; align-items: center; gap: 4px; color: var(--accent); }
+.lesson-card select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; font-size: 16px; }
+.modes { display: flex; flex-direction: column; gap: 14px; }
 .mode-btn {
-  --c: var(--arrow); display: flex; align-items: center; gap: 22px; padding: 0 24px 0 0; height: 88px; overflow: hidden;
-  border: 0; border-radius: 22px; background: var(--c); color: #fff; font-size: 1.6rem; font-weight: 600; text-align: left; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  --c: var(--m-guess); display: flex; align-items: center; gap: 16px; padding: 0 18px 0 14px; height: 96px;
+  border: 0; border-radius: 24px; background: var(--c); color: var(--m-text); text-align: left; box-shadow: var(--shadow);
 }
 .mode-btn.guess { --c: var(--m-guess); }
 .mode-btn.recall { --c: var(--m-recall); }
 .mode-btn.listen { --c: var(--m-listen); }
-.mode-icon { align-self: stretch; width: 80px; display: grid; place-items: center; background: rgba(255,255,255,.2); }
-.lesson-row { display: flex; justify-content: center; padding-top: 12px; }
-select.pill, .lesson-row select {
-  font: inherit; font-size: .9rem; color: var(--accent); background: var(--blush) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12'%3E%3Cpath d='M2 4.5l4 4 4-4' fill='none' stroke='%23b0503f' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
-  -webkit-appearance: none; appearance: none; border: 0; border-radius: 999px; padding: 9px 34px 9px 18px;
-}
+.mode-icon { flex: none; width: 66px; height: 66px; border-radius: 18px; display: grid; place-items: center; background: var(--m-tile); }
+.mode-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.mode-title { font-size: 1.4rem; font-weight: 700; }
+.mode-desc { font-size: .9rem; color: var(--m-sub); }
+.motto { margin-top: auto; padding: 24px 0 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted); }
+.motto-zh { font-size: 1.05rem; letter-spacing: .3em; color: var(--accent); }
+.motto-en { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; }
 
 /* burger menu */
 .menu { padding: 6px; width: auto; min-width: 200px; }

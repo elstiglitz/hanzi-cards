@@ -228,7 +228,9 @@ function route() {
   $('list-view').hidden = name !== 'words' || listLesson === null;
   $('add-view').hidden = name !== 'add';
   $('settings-view').hidden = name !== 'settings';
-  $('back').style.visibility = name === '' ? 'hidden' : 'visible';   // the bar stays so the layout does not jump
+  $('back').hidden = name === '';
+  $('brand').hidden = name !== '';
+  $('bar').classList.toggle('home-bar', name === '');
   $('menu-btn').hidden = name !== '';
   setMenu(false);
   $('help-btn').hidden = !isMode;
@@ -294,7 +296,9 @@ function initLessons() {
   if (words.some((w) => !w.lesson)) sel.append(new Option('Unassigned', NONE));
   sel.value = [...sel.options].some((o) => o.value === store.lesson) ? store.lesson : '';
   store.lesson = sel.value;
-  sel.addEventListener('change', () => { store.lesson = sel.value; saveStore(); renderHome(); });
+  const showName = () => { $('lesson-name').textContent = sel.options[sel.selectedIndex].text; };
+  showName();
+  sel.addEventListener('change', () => { store.lesson = sel.value; saveStore(); showName(); renderHome(); });
 }
 
 /* ---- cards ---- */
