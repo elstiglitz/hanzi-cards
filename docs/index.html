@@ -21,7 +21,7 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 <body>
 <header id="bar">
   <button id="back" class="quiet">&lsaquo; Back</button>
-  <div id="brand" class="brand"><span class="logo" lang="zh-Hans">文</span>Mandarin</div>
+  <div id="brand" class="brand"><span class="logo" lang="zh-Hans">文</span>Hanzi Cards</div>
   <button id="menu-btn" class="quiet round" aria-label="Menu" aria-haspopup="menu" aria-expanded="false" hidden>
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
   </button>
@@ -42,8 +42,7 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 <main id="home-view" class="home">
   <div class="intro">
     <div class="eyebrow">Your daily practice</div>
-    <h1>Ready to learn?</h1>
-    <p>Choose how you&rsquo;d like to practice today.</p>
+    <p class="lead">Choose how you&rsquo;d like to practice today.</p>
   </div>
   <label class="lesson-card">
     <span class="cap">Current lesson</span>
