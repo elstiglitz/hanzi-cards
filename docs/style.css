@@ -44,7 +44,7 @@ kbd { font: inherit; font-size: .75rem; color: var(--muted); border: 1px solid v
 /* top bar: Back on the left, Help on the right */
 #bar {
   display: flex; justify-content: space-between; align-items: center;
-  margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 0; min-height: calc(var(--bar-h) + env(safe-area-inset-top));
+  margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 6px) 16px 6px; min-height: calc(var(--bar-h) + env(safe-area-inset-top));
   background: var(--bar); color: var(--on-bar);
 }
 #bar button.quiet { color: var(--on-bar); }

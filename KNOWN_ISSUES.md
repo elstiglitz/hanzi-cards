@@ -11,7 +11,7 @@
 
 **Known limitation.** If the phone or the Appearance setting switches between light and dark while the app is open, the strip colour does not follow until the app is closed and reopened. Left as is on purpose (Oct 2026).
 
-**Not part of the workaround.** The 20px padding above the Add words form was a separate request and stays.
+**Not part of the workaround.** The taller toolbar (64px, with a little space above and below its content) and the 20px padding above the Add words form were separate requests. Both stay if the workaround is removed.
 
 **How to retire it.** After an iOS update, remove the strip div and the `.status-strip` rule, rebuild the data, push, then open the installed app and check the top of the screen. If the blur is back, restore both. Also try the quick test: Settings > Accessibility > Display & Text Size > Reduce Transparency removes the blur; if it is no longer needed for the app to look right, the workaround is probably safe to remove.
 
