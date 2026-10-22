@@ -207,7 +207,9 @@ function route() {
   const isMode = name in MODES;
   $('home-view').hidden = name !== '';
   $('card-view').hidden = !isMode;
-  $('list-view').hidden = name !== 'words';
+  if (name === 'words') showLessonChooser();
+  $('lessons-view').hidden = name !== 'words' || listLesson !== null;
+  $('list-view').hidden = name !== 'words' || listLesson === null;
   $('add-view').hidden = name !== 'add';
   $('settings-view').hidden = name !== 'settings';
   $('back').style.visibility = name === '' ? 'hidden' : 'visible';   // the bar stays so the layout does not jump
@@ -219,6 +221,11 @@ function route() {
   if (name === 'add') renderAdd();
   if (name === 'settings') renderSettings();
   if (isMode) startMode(name);
+}
+
+function route2() {
+  $('lessons-view').hidden = false;
+  $('list-view').hidden = true;
 }
 
 function navigate(name) { location.hash = name; }
@@ -354,9 +361,38 @@ function arrowUp(e) {
 function arrowDown() { upStep = 0; setHint(false); }
 
 /* ---- all words ---- */
+// All words: first a choice of lessons (or everything), then the list. null = still choosing.
+let listLesson = null;
+
+function showLessonChooser() {
+  listLesson = null;
+  const box = $('lessons-view');
+  box.textContent = '';
+  const names = [...new Set(words.map((w) => w.lesson).filter(Boolean))].sort();
+  const choices = [['All words', words.length, '']];
+  names.forEach((n) => choices.push([n, words.filter((w) => w.lesson === n).length, n]));
+  const none = words.filter((w) => !w.lesson).length;
+  if (none) choices.push(['Unassigned', none, NONE]);
+  for (const [label, count, value] of choices) {
+    const b = Object.assign(document.createElement('button'), { className: 'home-item' });
+    b.append(label, Object.assign(document.createElement('small'), { textContent: count + ' words' }));
+    b.addEventListener('click', () => openList(value));
+    box.append(b);
+  }
+}
+
+function openList(lesson) {
+  listLesson = lesson;
+  $('search').value = '';
+  $('lessons-view').hidden = true;
+  $('list-view').hidden = false;
+  renderList('');
+}
+
 function renderList(filter) {
   const q = (filter || '').trim().toLowerCase();
-  const items = words.filter((w) =>
+  const pool = words.filter((w) => !listLesson || (listLesson === NONE ? !w.lesson : w.lesson === listLesson));
+  const items = pool.filter((w) =>
     !q || w.zh.includes(q) || w.py.toLowerCase().includes(q) || w.en.toLowerCase().includes(q));
   const ul = $('list');
   ul.textContent = '';
@@ -376,7 +412,7 @@ function renderList(filter) {
     frag.append(li);
   }
   ul.append(frag);
-  $('list-count').textContent = `${items.length} of ${words.length} words`;
+  $('list-count').textContent = `${items.length} of ${pool.length} words`;
 }
 
 /* ---- adding words: they wait in an inbox until synced on the Mac, where audio is generated ---- */
@@ -615,8 +651,6 @@ async function init() {
   loadInbox();
   words = await (await fetch('data/words.json')).json();
   initLessons();
-  renderList('');
-
   wireAdd();
   applyTheme();
   wireSettings();
@@ -624,7 +658,11 @@ async function init() {
   for (const name of [...Object.keys(MODES), 'words', 'add']) {
     $('go-' + name).addEventListener('click', () => navigate(name));
   }
-  $('back').addEventListener('click', () => navigate(''));
+  $('back').addEventListener('click', () => {
+    // inside a lesson's list, Back returns to the lesson choice first
+    if (currentScreen() === 'words' && listLesson !== null) { showLessonChooser(); route2(); }
+    else navigate('');
+  });
   window.addEventListener('hashchange', route);
 
   $('card').addEventListener('click', toggleReveal);

@@ -1,7 +1,7 @@
 :root {
   --bg: #faf8f5; --surface: #fff; --text: #1f1d1a; --muted: #77716a;
   --accent: #b3261e; --arrow: #8c1c13; --on-arrow: #fff; --line: #e6e1da;
-  --bar: #8c1c13; --on-bar: #fff;
+  --bar: #b0564c; --on-bar: #fff;
   --good-bg: #dff3e3; --good-fg: #1d6b32; --bad-bg: #fbe0de; --bad-fg: #a3261e;
   color-scheme: light dark;
 }
@@ -33,7 +33,7 @@ kbd { font: inherit; font-size: .75rem; color: var(--muted); border: 1px solid v
   background: var(--bar); color: var(--on-bar);
 }
 #bar button.quiet { color: var(--on-bar); }
-#bar button.round { border-color: color-mix(in srgb, var(--on-bar) 45%, transparent); }
+#bar button.round { border: 0; border-radius: 0; width: auto; font-size: 1.25rem; padding: 10px 4px; }
 button.quiet { background: none; border: 0; color: var(--muted); padding: 10px 4px; }
 button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--line); border-radius: 50%; font-size: .9rem; }
 .help {
@@ -53,7 +53,7 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 .home { display: flex; flex-direction: column; justify-content: center; gap: 14px; min-height: 80vh; }
 .home-item { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 22px; border-radius: 18px; font-size: 1.25rem; text-align: left; }
 .home-item small { color: var(--muted); font-size: .85rem; }
-.home-item.quiet-item { background: none; border-style: dashed; padding: 14px 22px; font-size: 1rem; }
+.home-item.quiet-item { background: none; padding: 14px 22px; font-size: 1rem; }
 .home { min-height: 70vh; }
 .quiet-row { display: flex; gap: 14px; }
 .quiet-row .home-item { flex: 1; }
@@ -79,7 +79,6 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 #card-view { display: flex; flex-direction: column; height: calc(100dvh - 52px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px); }
 button.icon { width: 48px; height: 48px; padding: 0; font-size: 1.25rem; border-radius: 50%; display: grid; place-items: center; }
 button.grade { min-width: 112px; height: 48px; padding: 0 18px; border-radius: 24px; color: var(--arrow); }
-button.icon.on { border-color: var(--accent); }
 .done { flex: 1; margin-top: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
 .done-title { font-size: 1.6rem; }
 .done-sub { color: var(--muted); }
@@ -127,3 +126,5 @@ button.primary { background: var(--arrow); color: var(--on-arrow); border-color:
 .set-row small { display: block; color: var(--muted); font-size: .8rem; }
 .set-row select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
 .set-row input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--arrow); }
+
+.lessons { display: flex; flex-direction: column; gap: 14px; padding-top: 16px; }
