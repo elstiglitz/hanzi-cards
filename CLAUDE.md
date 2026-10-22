@@ -17,7 +17,7 @@ The app is finished, live and in use. All 8 steps of `PLAN.md` are done: data bu
 
 Next steps, in the order I suggested (the user has not picked yet):
 1. Back up study progress (export/import). Progress lives only in the phone's browser storage; if iOS clears it or the phone changes, weeks of study are lost. Most important gap.
-2. iPhone gestures (see Backlog).
+2. iPhone gestures (see Backlog). A first version (tap = sound, swipe up = hint/answer, swipe right/left = grade) was built, pushed and reverted in Oct 2026: the user found the swiping did not feel natural. It was imperfect, not rejected; the user may want to retry later, but for now the focus is a functional MVP. Find it in git history (commit 869de97, reverted by 08c5e64). Its UX notes: keep tap and swipe distinct, grade only after the answer, drag-to-cancel instead of undo.
 3. Spot-check audio pronunciation of tricky words (neutral tones like 妈妈; 还行; 玩儿). Never done.
 4. Smaller items in the Backlog. Suggested approach for the user: use the app for a few days first and let real use decide.
 
