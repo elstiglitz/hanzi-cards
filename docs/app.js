@@ -18,11 +18,11 @@ const NONE = '__none';    // lesson filter value for words with no lesson
 
 // Help panel content per mode: short tips, then keyboard rows (keyboard rows are desktop only)
 const HELP = {
-  guess:  { tips: ['Tap the card to hear it. Swipe up for the hint, again for the answer.', 'Swipe right if you got it, left if you missed it. Swipe down hides the hint.'],
+  guess:  { tips: ['Tap the card to show the answer, then choose Missed or Got it.', 'The hint shows the pinyin first. Using it counts against you.'],
             up: 'Hint, audio, answer', down: true, space: 'Play audio' },
-  recall: { tips: ['Tap the card to hear it. Swipe up for the answer.', 'Swipe right if you got it, left if you missed it.'],
+  recall: { tips: ['Recall the character from the English.', 'Tap the card to show the answer, then choose Missed or Got it.'],
             up: 'Answer', down: false, space: 'Play audio' },
-  listen: { tips: ['The word plays on its own. Tap the card to hear it again.', 'Swipe up for the hint, again for the answer. Swipe right if you got it, left if you missed it.'],
+  listen: { tips: ['The word plays on its own. Tap the speaker to hear it again.', 'Tap the card to show the answer, then choose Missed or Got it. The hint counts against you.'],
             up: 'Hint, answer', down: true, space: 'Replay audio' },
 };
 const K = (...keys) => keys.map((k) => `<kbd>${k}</kbd>`).join(' ');
@@ -41,7 +41,6 @@ function renderHelp() {
   ];
   $('help').innerHTML =
     `<ul>${h.tips.map((t) => `<li>${t}</li>`).join('')}</ul>` +
-    `<div class="help-actions"><button data-act="skip">Skip card</button><button data-act="shuffle">Shuffle: ${shuffled ? 'on' : 'off'}</button></div>` +
     `<div class="desktop-only"><h2>Keyboard</h2>` +
     rows.map(([label, keys]) => `<div class="key-row"><span>${label}</span><span>${keys}</span></div>`).join('') +
     `</div>`;
@@ -176,7 +175,6 @@ function grade(ok) {
   const item = queue[0];
   if (!item || !revealed) return;
   queue.shift();
-  countCard();
   if (relearn.has(item.w.id)) {
     if (ok) relearn.delete(item.w.id); else retry(item);   // second look: no schedule change
   } else {
@@ -192,51 +190,6 @@ function skip() {
   queue.shift();
   session.skipped++;
   newCard();
-}
-
-/* ---- touch gestures on the card ---- */
-const SWIPE = 0.35;      // horizontal drag (share of the card width) needed to grade
-const EDGE = 24;         // ignore touches starting this close to the screen edge (iOS back swipe)
-function wireGestures() {
-  const card = $('card');
-  let g = null;
-  const reset = () => {
-    card.style.transition = 'transform .18s';
-    card.style.transform = '';
-    card.removeAttribute('data-cue');
-    card.classList.remove('armed');
-  };
-  card.addEventListener('pointerdown', (e) => {
-    if (e.clientX < EDGE || e.clientX > innerWidth - EDGE) return;
-    g = { id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0, dy: 0 };
-    card.style.transition = 'none';
-    try { card.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
-  });
-  card.addEventListener('pointermove', (e) => {
-    if (!g || e.pointerId !== g.id) return;
-    g.dx = e.clientX - g.x;
-    g.dy = e.clientY - g.y;
-    if (Math.abs(g.dx) < 10 || Math.abs(g.dx) < Math.abs(g.dy)) return;
-    // horizontal drag: the card follows the finger; only a long drag after the answer counts
-    const armed = revealed && Math.abs(g.dx) > card.offsetWidth * SWIPE;
-    card.style.transform = `translateX(${g.dx * (revealed ? 1 : 0.25)}px) rotate(${g.dx / 40}deg)`;
-    card.dataset.cue = revealed && armed ? (g.dx > 0 ? '\u2713' : '\u2717') : '';
-    card.classList.toggle('armed', armed);
-  });
-  const end = (e, cancelled) => {
-    if (!g || e.pointerId !== g.id) return;
-    const { dx, dy } = g;
-    g = null;
-    const wasArmed = card.classList.contains('armed');
-    reset();
-    if (cancelled) return;
-    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { play(current()); return; }   // tap
-    if (Math.abs(dx) >= Math.abs(dy)) { if (wasArmed) { if (dx > 0) grade(true); else grade(false); } return; }
-    if (Math.abs(dy) < 40) return;
-    if (dy < 0) arrowUp(null, true); else arrowDown();
-  };
-  card.addEventListener('pointerup', (e) => end(e, false));
-  card.addEventListener('pointercancel', (e) => end(e, true));
 }
 
 function arrowRight() { if (revealed) grade(true); else skip(); }
@@ -322,20 +275,12 @@ function renderCard() {
   show('py', revealed || hinted);
   show('en', mode === 'recall' || revealed);
   $('listen-icon').hidden = mode !== 'listen' || revealed;
-  $('tap-hint').hidden = revealed || !showTapHint();
+  $('tap-hint').hidden = revealed;
   $('speak').style.visibility = w.audio ? 'visible' : 'hidden';   // no audio file => no speaker button
   // before the answer: right arrow skips, nothing on the left. After: Missed / Got it.
   $('miss').style.visibility = revealed ? 'visible' : 'hidden';
   $('ok').textContent = revealed ? 'Got it →' : '→';
   $('ok').setAttribute('aria-label', revealed ? 'Got it' : 'Skip');
-}
-
-// The "swipe up" reminder only shows for the first few cards; the help panel has the details.
-function showTapHint() {
-  try { return +localStorage.getItem('hanzi.cards') < 10; } catch (e) { return false; }
-}
-function countCard() {
-  try { localStorage.setItem('hanzi.cards', +localStorage.getItem('hanzi.cards') + 1); } catch (e) { /* ignore */ }
 }
 
 function toggleReveal() {
@@ -357,13 +302,13 @@ function setHint(on) {
 // Up arrow steps through a card. Guess: hint, audio, answer. Listen: hint, answer (it already played).
 // Recall: straight to the answer. Steps that do not apply are skipped (no pinyin, no audio).
 // Once revealed, up replays the audio.
-function arrowUp(e, touch) {
+function arrowUp(e) {
   const w = current();
-  if (!w || (e && e.repeat)) return;
-  if (revealed) { if (!touch) play(w); return; }
+  if (!w || e.repeat) return;
+  if (revealed) { play(w); return; }
   const steps = [];
   if (MODES[mode].hint && w.py) steps.push(() => setHint(true));
-  if (!touch && MODES[mode].upAudio && w.audio) steps.push(() => play(w));
+  if (MODES[mode].upAudio && w.audio) steps.push(() => play(w));
   steps.push(toggleReveal);
   steps[Math.min(upStep++, steps.length - 1)]();
 }
@@ -640,13 +585,7 @@ async function init() {
   $('back').addEventListener('click', () => navigate(''));
   window.addEventListener('hashchange', route);
 
-  wireGestures();
-  $('help').addEventListener('click', (e) => {
-    const act = e.target.closest('[data-act]');
-    if (!act) return;
-    if (act.dataset.act === 'skip') { skip(); setHelp(false); }
-    else { toggleShuffle(); renderHelp(); }
-  });
+  $('card').addEventListener('click', toggleReveal);
   $('miss').addEventListener('click', () => grade(false));
   $('ok').addEventListener('click', arrowRight);
   $('speak').addEventListener('click', () => play(current()));
