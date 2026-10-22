@@ -1,6 +1,6 @@
 /* One red family. Light and dark share the same variable names. */
 /* toolbar height below the status bar; the card and menus are positioned from it */
-:root { --bar-h: 64px; }
+:root { --bar-h: 52px; }
 :root {
   --bg: #fbf5f0; --surface: #fffaf6; --text: #3a1713; --muted: #8a5f58; --line: #ead8ce;
   --bar: #bc5a49; --on-bar: #fff; --accent: #a3402f; --arrow: #a94a3a; --on-arrow: #fff; --blush: #f3dcd5;
@@ -44,7 +44,7 @@ kbd { font: inherit; font-size: .75rem; color: var(--muted); border: 1px solid v
 /* top bar: Back on the left, Help on the right */
 #bar {
   display: flex; justify-content: space-between; align-items: center;
-  margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 0; min-height: calc(var(--bar-h) + env(safe-area-inset-top));
+  margin: 0 -16px; padding: env(safe-area-inset-top) 16px 0; min-height: calc(var(--bar-h) + env(safe-area-inset-top));
   background: var(--bar); color: var(--on-bar);
 }
 #bar button.quiet { color: var(--on-bar); }
@@ -184,6 +184,6 @@ button.primary { background: var(--arrow); color: var(--on-arrow); border-color:
 .lessons .home-item small { color: var(--muted); font-size: .85rem; }
 .help-tip { margin: 0 0 12px; }
 
-/* Experiment for the blur under the iOS status bar in the installed app: a solid strip against the top edge,
+/* WORKAROUND (see KNOWN_ISSUES.md, remove when Apple fixes it): blur under the iOS status bar in the installed app. a solid strip against the top edge,
    the page background colour on every screen. */
 .status-strip { position: fixed; inset: 0 0 auto; height: max(8px, env(safe-area-inset-top)); background: var(--bg); z-index: 9999; pointer-events: none; }
