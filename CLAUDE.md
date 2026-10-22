@@ -7,6 +7,7 @@ Personal Mandarin flashcard app (PWA, offline, iPhone). Vocabulary source: `Data
 - Always ask before sending any proprietary or personal data to an online service (APIs, TTS, translation, uploads, etc.). This includes the vocabulary list, any source course material and anything derived from them. Say what would be sent and to whom, and wait for approval. Approval covers only that specific request.
   - Standing consent (given by the user, Oct 2026): for THIS project only, generating audio for words with `tools/gen_audio.py` (it sends only the Chinese text of the words to Microsoft's edge-tts service) does not need to be asked about each time. Anything else (other services, other data, course material, pushing to GitHub) still needs approval.
 - Keep raw source material out of git: everything under `Data/` except `Data/Formatted data/Words.csv` is ignored (see `.gitignore`).
+-  Standing consent (Oct 2026): pushing app code and UI changes (docs/ HTML/CSS/JS, sw.js, notes) to main does not need asking each time. The user tests directly on the iPhone: build, commit, push, then say what to check. Still ask before pushing vocabulary or audio changes (Words.csv, docs/audio/, docs/data/).
 
 ## About the user
 - The user is not a developer: explain choices simply.
@@ -30,6 +31,7 @@ Lessons learned (do not repeat):
 Unverified or open:
 - Two-factor on the GitHub account (cannot be seen from here).
 - Old commits are still fetchable by hash on GitHub after the history rewrite. Only GitHub support can purge them. The wording is mild; left as is unless the user asks.
+- iOS status bar blur in the installed app: a workaround is in place (a solid strip at the top of the page). See KNOWN_ISSUES.md for where it lives and how to remove it once Apple fixes the blur.
 
 ## Live app
 - Repo: https://github.com/elstiglitz/hanzi-cards (public). App: https://elstiglitz.github.io/hanzi-cards/ (GitHub Pages serves `docs/` from `main`).
