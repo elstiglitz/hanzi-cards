@@ -114,8 +114,6 @@ button.primary { background: var(--arrow); color: var(--on-arrow); border-color:
 #miss { background: var(--bad-bg); color: var(--bad-fg); border-color: transparent; }
 
 /* settings */
-.home { position: relative; }
-.settings-btn { position: absolute; top: 8px; right: 0; border: 0; font-size: 1.2rem; color: var(--muted); }
 .set-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 4px; border-bottom: 1px solid var(--line); }
 .set-row small { display: block; color: var(--muted); font-size: .8rem; }
 .set-row select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }

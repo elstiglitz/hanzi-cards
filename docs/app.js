@@ -210,7 +210,8 @@ function route() {
   $('list-view').hidden = name !== 'words';
   $('add-view').hidden = name !== 'add';
   $('settings-view').hidden = name !== 'settings';
-  $('bar').hidden = name === '';
+  $('back').style.visibility = name === '' ? 'hidden' : 'visible';   // the bar stays so the layout does not jump
+  $('go-settings').hidden = name !== '';
   $('help-btn').hidden = !isMode;
   setHelp(false);
   audio.pause();

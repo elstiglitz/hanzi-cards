@@ -18,8 +18,9 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
-<header id="bar" hidden>
+<header id="bar">
   <button id="back" class="quiet">&lsaquo; Back</button>
+  <button id="go-settings" class="quiet round" aria-label="Settings" hidden>&#9881;</button>
   <button id="help-btn" class="quiet round" aria-label="Help" aria-haspopup="dialog" aria-expanded="false" hidden>?</button>
 </header>
 
@@ -29,7 +30,6 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 <button id="update" class="update" hidden>Update available. Tap to reload.</button>
 
 <main id="home-view" class="home">
-  <button id="go-settings" class="quiet round settings-btn" aria-label="Settings">&#9881;</button>
   <button id="go-guess" class="home-item">Guess <small id="sub-guess"></small></button>
   <button id="go-recall" class="home-item">Recall <small id="sub-recall"></small></button>
   <button id="go-listen" class="home-item">Listen <small id="sub-listen"></small></button>
@@ -64,7 +64,7 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
   <label class="set-row"><span>New words per day <small>for each mode</small></span>
     <select id="set-perday"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option><option>50</option></select></label>
   <label class="set-row"><span>Appearance</span>
-    <select id="set-theme"><option value="auto">Match phone</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+    <select id="set-theme"><option value="auto">Match device</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
   <label class="set-row"><span>Shuffle cards <small>can be switched per session in the ? menu</small></span>
     <input type="checkbox" id="set-shuffle"></label>
   <label class="set-row"><span>Play sound automatically <small>Listen mode</small></span>
