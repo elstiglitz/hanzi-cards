@@ -185,6 +185,5 @@ button.primary { background: var(--arrow); color: var(--on-arrow); border-color:
 .help-tip { margin: 0 0 12px; }
 
 /* Experiment for the blur under the iOS status bar in the installed app: a solid strip against the top edge,
-   the same colour as what is below it (toolbar colour, or page colour on the home screen). */
-.status-strip { position: fixed; inset: 0 0 auto; height: 8px; background: var(--bar); z-index: 9999; pointer-events: none; }
-body.on-home .status-strip { background: var(--bg); }
+   the page background colour on every screen. */
+.status-strip { position: fixed; inset: 0 0 auto; height: 8px; background: var(--bg); z-index: 9999; pointer-events: none; }
