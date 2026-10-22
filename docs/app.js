@@ -9,11 +9,10 @@ const MODES = {
   recall: { hint: false, desc: 'See the English' },
   listen: { hint: true, auto: true, desc: 'Hear the word' },
 };
-const SCREENS = ['', 'words', 'add', ...Object.keys(MODES)];
+const SCREENS = ['', 'words', 'add', 'settings', ...Object.keys(MODES)];
 
 // Spaced repetition (Leitner boxes). Box 1..5 = days until the card is due again.
 const INTERVALS = [0, 1, 2, 4, 8, 16];
-const NEW_PER_DAY = 10;   // per mode
 const NONE = '__none';    // lesson filter value for words with no lesson
 
 // Help panel content per mode: short tips, then keyboard rows (keyboard rows are desktop only)
@@ -48,12 +47,13 @@ function renderHelp() {
 
 /* ---- saved progress (on this device only) ---- */
 const STORE_KEY = 'hanzi.v1';
-let store = { progress: { guess: {}, recall: {}, listen: {} }, daily: { date: 0, new: {} }, lesson: '' };
+const DEFAULT_SETTINGS = { perDay: 10, theme: 'auto', shuffle: true, autoplay: true };   // perDay is per mode
+let store = { progress: { guess: {}, recall: {}, listen: {} }, daily: { date: 0, new: {} }, lesson: '', settings: { ...DEFAULT_SETTINGS } };
 
 function loadStore() {
   try {
     const s = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (s && s.progress) store = { ...store, ...s };
+    if (s && s.progress) store = { ...store, ...s, settings: { ...DEFAULT_SETTINGS, ...s.settings } };
   } catch (e) { /* storage unavailable or corrupt: start fresh */ }
   for (const m of Object.keys(MODES)) store.progress[m] = store.progress[m] || {};
 }
@@ -127,7 +127,7 @@ function plan(m) {
   const t = today();
   const pool = words.filter((w) => inScope(w) && (m !== 'listen' || w.audio));
   const due = pool.filter((w) => p[w.id] && p[w.id].due <= t).sort((a, b) => p[a.id].due - p[b.id].due);
-  const allowance = Math.max(0, NEW_PER_DAY - newToday(m));
+  const allowance = Math.max(0, store.settings.perDay - newToday(m));
   const fresh = pool.filter((w) => !p[w.id]).slice(0, allowance);
   return { due, fresh };
 }
@@ -145,6 +145,7 @@ function order(items) {
 
 function startMode(name) {
   mode = name;
+  shuffled = store.settings.shuffle;
   renderHelp();
   const { due, fresh } = plan(name);
   let r = 0;
@@ -166,7 +167,7 @@ function newCard() {
   hinted = false;
   usedHint = false;
   renderCard();
-  if (MODES[mode].auto) play(current());
+  if (MODES[mode].auto && store.settings.autoplay) play(current());
 }
 
 function retry(item) { queue.push({ w: item.w, group: 2, rank: rankCounter++ }); }
@@ -208,12 +209,14 @@ function route() {
   $('card-view').hidden = !isMode;
   $('list-view').hidden = name !== 'words';
   $('add-view').hidden = name !== 'add';
+  $('settings-view').hidden = name !== 'settings';
   $('bar').hidden = name === '';
   $('help-btn').hidden = !isMode;
   setHelp(false);
   audio.pause();
   if (name === '') renderHome();
   if (name === 'add') renderAdd();
+  if (name === 'settings') renderSettings();
   if (isMode) startMode(name);
 }
 
@@ -222,6 +225,30 @@ function navigate(name) { location.hash = name; }
 function setHelp(open) {
   $('help').hidden = !open;
   $('help-btn').setAttribute('aria-expanded', open);
+}
+
+/* ---- settings ---- */
+function applyTheme() {
+  const t = store.settings.theme;
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+  else delete document.documentElement.dataset.theme;
+}
+
+function renderSettings() {
+  const st = store.settings;
+  $('set-perday').value = String(st.perDay);
+  $('set-theme').value = st.theme;
+  $('set-shuffle').checked = st.shuffle;
+  $('set-autoplay').checked = st.autoplay;
+}
+
+function wireSettings() {
+  const st = store.settings;
+  const change = (id, fn) => $(id).addEventListener('change', (e) => { fn(e.target); saveStore(); });
+  change('set-perday', (el) => { st.perDay = +el.value; });
+  change('set-theme', (el) => { st.theme = el.value; applyTheme(); });
+  change('set-shuffle', (el) => { st.shuffle = el.checked; });
+  change('set-autoplay', (el) => { st.autoplay = el.checked; });
 }
 
 /* ---- home ---- */
@@ -273,14 +300,14 @@ function renderCard() {
   $('en').textContent = w.en;
   // Guess and Recall show only the question side, then only the answer side. Listen reveals everything.
   if (mode === 'listen') {
-    show('zh', revealed); show('py', revealed || hinted); show('en', revealed);
+    show('zh', revealed); show('py', hinted); show('en', revealed);
   } else {
     const front = mode === 'guess' ? 'zh' : 'en', back = mode === 'guess' ? 'en' : 'zh';
     show(front, !revealed);
     show(back, revealed);
-    show('py', hinted && !revealed);
+    show('py', hinted);
   }
-  const canHint = MODES[mode].hint && w.py && !revealed;
+  const canHint = w.py && (revealed || MODES[mode].hint);
   $('hint').style.visibility = canHint ? 'visible' : 'hidden';
   $('hint').classList.toggle('on', hinted);
   $('listen-icon').hidden = mode !== 'listen' || revealed;
@@ -296,15 +323,16 @@ function renderCard() {
 function toggleReveal() {
   if (!current()) return;
   revealed = !revealed;
-  if (!revealed) { hinted = false; upStep = 0; }
+  if (!revealed) upStep = 0;
   renderCard();
 }
 
+// Before the answer a hint counts against the card; after it, the pinyin is free to look at.
 function setHint(on) {
   const w = current();
-  if (w && MODES[mode].hint && w.py && !revealed) {
+  if (w && w.py && (revealed || MODES[mode].hint)) {
     hinted = on;
-    if (on) usedHint = true;
+    if (on && !revealed) usedHint = true;
     renderCard();
   }
 }
@@ -589,6 +617,9 @@ async function init() {
   renderList('');
 
   wireAdd();
+  applyTheme();
+  wireSettings();
+  $('go-settings').addEventListener('click', () => navigate('settings'));
   for (const name of [...Object.keys(MODES), 'words', 'add']) {
     $('go-' + name).addEventListener('click', () => navigate(name));
   }
