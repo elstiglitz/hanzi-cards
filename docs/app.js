@@ -2,6 +2,17 @@
 
 const $ = (id) => document.getElementById(id);
 
+// One set of line icons (same stroke everywhere) instead of emoji and text symbols
+const ICON_PATHS = {
+  speaker: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9a4 4 0 010 6M18 6.5a8 8 0 010 11"/>',
+  bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0012 3z"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  cross: '<path d="M6 6l12 12M18 6L6 18"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+};
+const icon = (name, size = 24) =>
+  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
+
 // Study modes. hint: can the pinyin be shown before the answer? auto: play audio when a card appears.
 // upAudio: does the up-arrow sequence include a play step? (not in listen: it already played; not in recall: it gives the answer away)
 const MODES = {
@@ -17,13 +28,17 @@ const NONE = '__none';    // lesson filter value for words with no lesson
 
 // Help panel content per mode: short tips, then keyboard rows (keyboard rows are desktop only)
 const HELP = {
-  guess:  { tips: ['Tap the card to show the answer, then choose Missed or Got it.', 'The hint shows the pinyin first. Using it counts against you.'],
-            up: 'Hint, audio, answer', down: true, space: 'Play audio' },
-  recall: { tips: ['Recall the character from the English.', 'Tap the card to show the answer, then choose Missed or Got it.'],
-            up: 'Answer', down: false, space: 'Play audio' },
-  listen: { tips: ['The word plays on its own. Tap the speaker to hear it again.', 'Tap the card to show the answer, then choose Missed or Got it. The hint counts against you.'],
-            up: 'Hint, answer', down: true, space: 'Replay audio' },
+  guess:  { tip: 'Tap the card to see the answer.', up: 'Hint, audio, answer', down: true, space: 'Play audio' },
+  recall: { tip: 'Tap the card to see the answer.', up: 'Answer', down: false, space: 'Play audio' },
+  listen: { tip: 'The word plays on its own. Tap the card to see the answer.', up: 'Hint, answer', down: true, space: 'Replay audio' },
 };
+const LEGEND = [
+  ['speaker', 'Play the sound'],
+  ['bulb', 'Show the pinyin. Before the answer it counts against you.'],
+  ['cross', 'Missed (after the answer)'],
+  ['check', 'Got it (after the answer)'],
+  ['arrow', 'Skip (before the answer)'],
+];
 const K = (...keys) => keys.map((k) => `<kbd>${k}</kbd>`).join(' ');
 
 function renderHelp() {
@@ -39,7 +54,8 @@ function renderHelp() {
     ['Help / close', K('?', 'Esc')],
   ];
   $('help').innerHTML =
-    `<ul>${h.tips.map((t) => `<li>${t}</li>`).join('')}</ul>` +
+    `<p class="help-tip">${h.tip}</p>` +
+    `<div class="legend">${LEGEND.map(([n, t]) => `<div class="legend-row">${icon(n, 22)}<span>${t}</span></div>`).join('')}</div>` +
     `<div class="desktop-only"><h2>Keyboard</h2>` +
     rows.map(([label, keys]) => `<div class="key-row"><span>${label}</span><span>${keys}</span></div>`).join('') +
     `</div>`;
@@ -321,11 +337,10 @@ function renderCard() {
   $('hint').style.visibility = canHint ? 'visible' : 'hidden';
   $('hint').classList.toggle('on', hinted);
   $('listen-icon').hidden = mode !== 'listen' || revealed;
-  $('tap-hint').hidden = revealed;
   $('speak').style.visibility = w.audio ? 'visible' : 'hidden';   // no audio file => no speaker button
   // before the answer: right arrow skips, nothing on the left. After: Missed / Got it.
   $('miss').style.visibility = revealed ? 'visible' : 'hidden';
-  $('ok').textContent = revealed ? '\u2713 Got it' : '\u2192';
+  $('ok').innerHTML = icon(revealed ? 'check' : 'arrow');
   $('ok').classList.toggle('good', revealed);
   $('ok').setAttribute('aria-label', revealed ? 'Got it' : 'Skip');
 }
@@ -401,12 +416,12 @@ function renderList(filter) {
   const frag = document.createDocumentFragment();
   for (const w of items) {
     const li = document.createElement('li');
-    const zh = Object.assign(document.createElement('span'), { className: 'l-zh', textContent: w.zh });
+    const zh = Object.assign(document.createElement('span'), { className: 'l-zh', lang: 'zh-Hans', textContent: w.zh });
     const py = Object.assign(document.createElement('span'), { className: 'l-py', textContent: w.py });
     const en = Object.assign(document.createElement('span'), { className: 'l-en', textContent: w.en });
     li.append(zh, py, en);
     if (w.audio) {
-      const b = Object.assign(document.createElement('button'), { className: 'l-play', textContent: '\u{1F50A}' });
+      const b = Object.assign(document.createElement('button'), { className: 'l-play', innerHTML: icon('speaker', 20) });
       b.setAttribute('aria-label', 'Play ' + w.zh);
       b.addEventListener('click', () => play(w));
       li.append(b);
@@ -543,7 +558,7 @@ function renderInbox() {
     const row = document.createElement('button');
     row.type = 'button'; row.className = 'row';
     row.append(
-      Object.assign(document.createElement('span'), { className: 'i-zh', textContent: e.zh }),
+      Object.assign(document.createElement('span'), { className: 'i-zh', lang: 'zh-Hans', textContent: e.zh }),
       Object.assign(document.createElement('span'), { className: 'i-py', textContent: e.py }),
       Object.assign(document.createElement('span'), { className: 'i-en', textContent: [e.en, e.lesson].filter(Boolean).join(' · ') }));
     row.addEventListener('click', () => startEdit(i));
@@ -653,6 +668,10 @@ async function init() {
   loadInbox();
   words = await (await fetch('data/words.json')).json();
   initLessons();
+  $('miss').innerHTML = icon('cross');
+  $('speak').innerHTML = icon('speaker');
+  $('hint').innerHTML = icon('bulb');
+  $('listen-icon').innerHTML = icon('speaker', 96);
   wireAdd();
   applyTheme();
   wireSettings();

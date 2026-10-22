@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
-<meta name="theme-color" content="#8c1c13">
+<meta name="theme-color" content="#bc5a49" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4a1f1b" media="(prefers-color-scheme: dark)">
 <script>
 // apply the saved theme before the page paints, so dark mode does not flash white
 try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
@@ -15,7 +16,7 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Hanzi">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <header id="bar">
@@ -43,22 +44,21 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
     <button id="go-recall" class="mode-btn recall"><span class="mode-icon"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2 2 0 013 3L8 19l-4 1z"/><path d="M14 7l3 3"/></svg></span>Recall</button>
     <button id="go-listen" class="mode-btn listen"><span class="mode-icon"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0116 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></svg></span>Listen</button>
   </div>
-  <label class="lesson-row">Lesson <select id="lesson" aria-label="Lesson filter"></select></label>
+  <label class="lesson-row"><select id="lesson" aria-label="Lesson filter"></select></label>
 </main>
 
 <main id="card-view" hidden>
   <section id="card" tabindex="0" aria-live="polite">
-    <div id="listen-icon" class="listen-icon" aria-hidden="true" hidden>&#128266;</div>
-    <div id="zh" class="zh"></div>
+    <div id="listen-icon" class="listen-icon" aria-hidden="true" hidden></div>
+    <div id="zh" class="zh" lang="zh-Hans"></div>
     <div id="en" class="en"></div>
     <div id="py" class="py"></div>
-    <div class="tap-hint" id="tap-hint">Tap to reveal</div>
   </section>
   <div id="actions" class="actions">
-    <button id="miss" class="grade" aria-label="Missed">&#10007; Missed</button>
-    <button id="speak" class="icon" aria-label="Play audio">&#128266;</button>
-    <button id="hint" class="icon" aria-label="Hint">&#128161;</button>
-    <button id="ok" class="grade" aria-label="Skip">&rarr;</button>
+    <button id="miss" aria-label="Missed"></button>
+    <button id="speak" aria-label="Play audio"></button>
+    <button id="hint" aria-label="Show pinyin"></button>
+    <button id="ok" aria-label="Skip"></button>
   </div>
   <section id="done" class="done" hidden>
     <div id="done-title" class="done-title"></div>
