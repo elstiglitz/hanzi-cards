@@ -67,7 +67,7 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 .update { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom) + 16px); z-index: 10; background: var(--arrow); color: var(--on-arrow); border: 0; border-radius: 22px; padding: 12px 20px; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
 
 /* home: transparent header with the app mark, intro, lesson card, mode buttons, motto */
-#bar.home-bar { background: linear-gradient(var(--bar) env(safe-area-inset-top), transparent env(safe-area-inset-top)); color: var(--text); }
+#bar.home-bar { background: transparent; color: var(--text); }
 #bar.home-bar button.quiet { color: var(--text); }
 .brand { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; font-weight: 600; }
 .logo { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: var(--bar); color: var(--on-bar); font-size: 1.5rem; font-weight: 400; }
@@ -138,7 +138,8 @@ button.round { width: 32px; height: 32px; padding: 0; border: 1px solid var(--li
 @media (hover: none) { .desktop-only, kbd { display: none !important; } }
 
 /* add words */
-#add-view { padding-bottom: 32px; }
+#add-view { padding: 20px 0 32px; }
+#list-view { padding-top: 16px; }
 #add-view input:not([type=file]), #add-view textarea {
   width: 100%; font: inherit; padding: 12px 14px; margin-bottom: 10px; border-radius: 12px;
   border: 1px solid var(--line); background: var(--surface); color: var(--text);
