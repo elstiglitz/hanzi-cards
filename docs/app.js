@@ -245,11 +245,11 @@ function initLessons() {
 }
 
 /* ---- cards ---- */
-// guess keeps the layout fixed (hidden text still takes space); the other modes collapse hidden text
+// hidden text collapses so the visible text stays centred
 function show(id, on) {
   const el = $(id);
-  if (mode === 'guess') { el.style.display = ''; el.style.visibility = on ? 'visible' : 'hidden'; }
-  else { el.style.visibility = ''; el.style.display = on ? '' : 'none'; }
+  el.style.visibility = '';
+  el.style.display = on ? '' : 'none';
 }
 
 function renderCard() {
@@ -271,15 +271,25 @@ function renderCard() {
   $('zh').classList.toggle('long', [...w.zh].length > 4);
   $('py').textContent = w.py;
   $('en').textContent = w.en;
-  show('zh', mode === 'guess' || revealed);
-  show('py', revealed || hinted);
-  show('en', mode === 'recall' || revealed);
+  // Guess and Recall show only the question side, then only the answer side. Listen reveals everything.
+  if (mode === 'listen') {
+    show('zh', revealed); show('py', revealed || hinted); show('en', revealed);
+  } else {
+    const front = mode === 'guess' ? 'zh' : 'en', back = mode === 'guess' ? 'en' : 'zh';
+    show(front, !revealed);
+    show(back, revealed);
+    show('py', hinted && !revealed);
+  }
+  const canHint = MODES[mode].hint && w.py && !revealed;
+  $('hint').style.visibility = canHint ? 'visible' : 'hidden';
+  $('hint').classList.toggle('on', hinted);
   $('listen-icon').hidden = mode !== 'listen' || revealed;
   $('tap-hint').hidden = revealed;
   $('speak').style.visibility = w.audio ? 'visible' : 'hidden';   // no audio file => no speaker button
   // before the answer: right arrow skips, nothing on the left. After: Missed / Got it.
   $('miss').style.visibility = revealed ? 'visible' : 'hidden';
-  $('ok').textContent = revealed ? 'Got it →' : '→';
+  $('ok').textContent = revealed ? '\u2713 Got it' : '\u2192';
+  $('ok').classList.toggle('good', revealed);
   $('ok').setAttribute('aria-label', revealed ? 'Got it' : 'Skip');
 }
 
@@ -589,6 +599,7 @@ async function init() {
   $('miss').addEventListener('click', () => grade(false));
   $('ok').addEventListener('click', arrowRight);
   $('speak').addEventListener('click', () => play(current()));
+  $('hint').addEventListener('click', () => setHint(!hinted));
   $('help-btn').addEventListener('click', (e) => { e.stopPropagation(); setHelp($('help').hidden); });
   $('search').addEventListener('input', (e) => renderList(e.target.value));
 
