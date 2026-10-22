@@ -308,7 +308,7 @@ function renderCard() {
     show(back, revealed);
     show('py', hinted);
   }
-  const canHint = w.py && (revealed || MODES[mode].hint);
+  const canHint = !!w.py;   // every mode, before and after the answer
   $('hint').style.visibility = canHint ? 'visible' : 'hidden';
   $('hint').classList.toggle('on', hinted);
   $('listen-icon').hidden = mode !== 'listen' || revealed;
@@ -331,7 +331,7 @@ function toggleReveal() {
 // Before the answer a hint counts against the card; after it, the pinyin is free to look at.
 function setHint(on) {
   const w = current();
-  if (w && w.py && (revealed || MODES[mode].hint)) {
+  if (w && w.py) {
     hinted = on;
     if (on && !revealed) usedHint = true;
     renderCard();
