@@ -213,7 +213,8 @@ function route() {
   $('add-view').hidden = name !== 'add';
   $('settings-view').hidden = name !== 'settings';
   $('back').style.visibility = name === '' ? 'hidden' : 'visible';   // the bar stays so the layout does not jump
-  $('go-settings').hidden = name !== '';
+  $('menu-btn').hidden = name !== '';
+  setMenu(false);
   $('help-btn').hidden = !isMode;
   setHelp(false);
   audio.pause();
@@ -229,6 +230,11 @@ function route2() {
 }
 
 function navigate(name) { location.hash = name; }
+
+function setMenu(open) {
+  $('menu').hidden = !open;
+  $('menu-btn').setAttribute('aria-expanded', open);
+}
 
 function setHelp(open) {
   $('help').hidden = !open;
@@ -261,11 +267,7 @@ function wireSettings() {
 
 /* ---- home ---- */
 function renderHome() {
-  for (const m of Object.keys(MODES)) {
-    const { due, fresh } = plan(m);
-    $('sub-' + m).textContent = `${MODES[m].desc} · ${due.length} due · ${fresh.length} new`;
-  }
-  $('sub-add').textContent = inbox.items.length ? `${inbox.items.length} waiting` : 'One or many';
+  $('sub-add').textContent = inbox.items.length ? `${inbox.items.length} waiting` : '';
 }
 
 function initLessons() {
@@ -655,6 +657,7 @@ async function init() {
   applyTheme();
   wireSettings();
   $('go-settings').addEventListener('click', () => navigate('settings'));
+  $('menu-btn').addEventListener('click', (e) => { e.stopPropagation(); setMenu($('menu').hidden); });
   for (const name of [...Object.keys(MODES), 'words', 'add']) {
     $('go-' + name).addEventListener('click', () => navigate(name));
   }
@@ -676,6 +679,7 @@ async function init() {
   document.addEventListener('click', (e) => {
     // tapping anywhere outside the help panel closes it
     if (!e.target.closest('#help')) setHelp(false);
+    if (!e.target.closest('#menu')) setMenu(false);
     // drop focus after a click so Return/Space shortcuts never double-trigger a focused button
     const b = e.target.closest('button');
     if (b) b.blur();
