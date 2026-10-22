@@ -264,6 +264,12 @@ function applyTheme() {
   const t = store.settings.theme;
   if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
   else delete document.documentElement.dataset.theme;
+  // the status bar area follows the page colour: forced by the setting, or by the phone's own mode
+  const colours = { light: '#fbf5f0', dark: '#1e1311' };
+  document.querySelectorAll('meta[name=theme-color]').forEach((m) => {
+    const own = m.media.includes('dark') ? 'dark' : 'light';
+    m.content = colours[t === 'light' || t === 'dark' ? t : own];
+  });
 }
 
 function renderSettings() {
