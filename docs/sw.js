@@ -3,7 +3,7 @@
 // Browsers only look for a new worker when THIS FILE changes, so tools/build_data.py stamps the build
 // version on the next line. A new build therefore changes sw.js, installs a fresh cache in the
 // background, and the page offers "Update available"; the new version takes over on reload.
-const BUILD = '491e55e66b';
+const BUILD = '2e337f66b0';
 
 const PREFIX = 'hanzi-';
 
