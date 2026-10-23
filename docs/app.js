@@ -509,14 +509,18 @@ function checkEntry(e, skipIndex = -1) {
   if (!HAN.test(e.zh)) return { kind: 'invalid' };
   const same = (o) => o.zh === e.zh && (!e.py || !o.py || normPy(o.py) === normPy(e.py));
   const inDeck = words.find(same);
-  if (inDeck) return { kind: 'deck', word: inDeck };
+  // A word already in the deck may still be added if it brings a lesson the deck word lacks.
+  if (inDeck && !splitLessons(e.lesson).some((l) => !inDeck.lessons.includes(l))) return { kind: 'deck', word: inDeck };
   if (inbox.items.some((o, i) => i !== skipIndex && same(o))) return { kind: 'inbox' };
   return null;
 }
 
 function why(e, r) {
   if (r.kind === 'invalid') return 'Enter a Chinese word or character.';
-  if (r.kind === 'deck') return `${e.zh} is already in your deck (${r.word.en}).`;
+  if (r.kind === 'deck') {
+    const l = r.word.lessons.join(' / ');
+    return `${e.zh} is already in your deck (${r.word.en})${l ? ', in ' + l : ''}. To add it to another lesson, enter that lesson.`;
+  }
   return `${e.zh} is already waiting.`;
 }
 
