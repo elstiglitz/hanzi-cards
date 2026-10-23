@@ -132,9 +132,16 @@ function shuffle(a) {
   return a;
 }
 
+// A word can sit in several lessons; w.lessons is a list (empty = unassigned).
+function inLesson(w, l) {
+  return !l || (l === NONE ? !w.lessons.length : w.lessons.includes(l));
+}
+// Lessons are written 'Year 1 / Year 2' in the CSV and in the inbox.
+const splitLessons = (s) => [...new Set((s || '').split('/').map((x) => x.trim()).filter(Boolean))];
+const lessonNames = () => [...new Set(words.flatMap((w) => w.lessons))].sort();
+
 function inScope(w) {
-  const l = store.lesson;
-  return !l || (l === NONE ? !w.lesson : w.lesson === l);
+  return inLesson(w, store.lesson);
 }
 
 // Cards for a mode: due for review first, then up to the daily allowance of new ones.
@@ -296,10 +303,9 @@ function renderHome() {
 
 function initLessons() {
   const sel = $('lesson');
-  const names = [...new Set(words.map((w) => w.lesson).filter(Boolean))].sort();
   sel.append(new Option('All lessons', ''));
-  names.forEach((n) => sel.append(new Option(n, n)));
-  if (words.some((w) => !w.lesson)) sel.append(new Option('Unassigned', NONE));
+  lessonNames().forEach((n) => sel.append(new Option(n, n)));
+  if (words.some((w) => !w.lessons.length)) sel.append(new Option('Unassigned', NONE));
   sel.value = [...sel.options].some((o) => o.value === store.lesson) ? store.lesson : '';
   store.lesson = sel.value;
   const showName = () => { $('lesson-name').textContent = sel.options[sel.selectedIndex].text; };
@@ -395,10 +401,9 @@ function showLessonChooser() {
   listLesson = null;
   const box = $('lessons-view');
   box.textContent = '';
-  const names = [...new Set(words.map((w) => w.lesson).filter(Boolean))].sort();
   const choices = [['All words', words.length, '']];
-  names.forEach((n) => choices.push([n, words.filter((w) => w.lesson === n).length, n]));
-  const none = words.filter((w) => !w.lesson).length;
+  lessonNames().forEach((n) => choices.push([n, words.filter((w) => w.lessons.includes(n)).length, n]));
+  const none = words.filter((w) => !w.lessons.length).length;
   if (none) choices.push(['Unassigned', none, NONE]);
   for (const [label, count, value] of choices) {
     const b = Object.assign(document.createElement('button'), { className: 'home-item' });
@@ -418,7 +423,7 @@ function openList(lesson) {
 
 function renderList(filter) {
   const q = (filter || '').trim().toLowerCase();
-  const pool = words.filter((w) => !listLesson || (listLesson === NONE ? !w.lesson : w.lesson === listLesson));
+  const pool = words.filter((w) => inLesson(w, listLesson));
   const items = pool.filter((w) =>
     !q || w.zh.includes(q) || w.py.toLowerCase().includes(q) || w.en.toLowerCase().includes(q));
   const ul = $('list');
@@ -585,7 +590,7 @@ function renderInbox() {
 }
 
 function renderAdd() {
-  const lessons = new Set([...words.map((w) => w.lesson), ...inbox.items.map((e) => e.lesson)].filter(Boolean));
+  const lessons = new Set([...lessonNames(), ...inbox.items.flatMap((e) => splitLessons(e.lesson))]);
   const dl = $('lesson-options');
   dl.textContent = '';
   lessons.forEach((l) => dl.append(new Option(l)));

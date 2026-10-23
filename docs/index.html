@@ -115,7 +115,7 @@ try { var t = JSON.parse(localStorage.getItem('hanzi.v1')).settings.theme; if (t
 
   <details class="bulk">
     <summary>Bulk import</summary>
-    <p class="hint">One word per line: Chinese, Pinyin, English, Lesson. Only Chinese is required. Rows without a lesson stay unassigned.</p>
+    <p class="hint">One word per line: Chinese, Pinyin, English, Lesson. Only Chinese is required. Rows without a lesson stay unassigned. For several lessons, separate them with a slash (Year 1 / Year 2).</p>
     <textarea id="bulk-text" rows="6" aria-label="Words to import" spellcheck="false"></textarea>
     <div class="form-row">
       <button id="bulk-go" type="button" class="primary">Import</button>

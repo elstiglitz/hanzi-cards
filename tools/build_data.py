@@ -9,6 +9,11 @@ from pathlib import Path
 words_csv, docs = Path(sys.argv[1]), Path(sys.argv[2])
 audio_manifest = json.loads((docs / 'audio' / 'manifest.json').read_text(encoding='utf-8'))
 
+def split_lessons(s):
+    """'Year 1 / Year 2' -> ['Year 1', 'Year 2'] (no blanks, no repeats, order kept)."""
+    return list(dict.fromkeys(x.strip() for x in s.split('/') if x.strip()))
+
+
 words, seen = [], set()
 for r in csv.DictReader(open(words_csv, encoding='utf-8', newline='')):
     zh, py = r['Chinese'].strip(), r['Pinyin'].strip()
@@ -21,7 +26,7 @@ for r in csv.DictReader(open(words_csv, encoding='utf-8', newline='')):
     if audio:
         assert (docs / 'audio' / audio).exists(), f'missing audio file {audio}'
     words.append({'id': wid, 'zh': zh, 'py': py, 'en': r['English'].strip(),
-                  'lesson': r['Lesson'].strip(), 'audio': audio})
+                  'lessons': split_lessons(r['Lesson']), 'audio': audio})
 
 (docs / 'data').mkdir(exist_ok=True)
 (docs / 'data' / 'words.json').write_text(
