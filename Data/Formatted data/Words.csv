@@ -171,7 +171,7 @@ Chinese,Pinyin,English,Lesson
 林,lín,woods,Year 1
 江,jiāng,river,Year 1
 山,shān,mountain,Year 1
-还,hái,still; also,Year 1
+还,hái,still; also,Year 1 / Preply - L2
 都,dōu,all,Year 1
 只,zhǐ,only,Year 1
 水,shuǐ,water,Year 1
@@ -255,7 +255,7 @@ Chinese,Pinyin,English,Lesson
 昨天,zuótiān,yesterday,Year 1
 生,shēng,to be born; to live; raw,Year 1
 生日,shēngrì,birthday,Year 1
-千,qiān,thousand,Year 1
+千,qiān,thousand,Year 1 / Preply - L3
 万,wàn,ten thousand,Year 1
 亿,yì,hundred million,Year 1
 校,xiào,school,Year 1
@@ -263,7 +263,7 @@ Chinese,Pinyin,English,Lesson
 少,shǎo,few; little,Year 1
 多少,duōshǎo,how many; how much,Year 1
 困,kùn,sleepy,Year 1
-没有,méiyǒu,to not have; there isn't,Year 1 / Preply - L1
+没有,méiyǒu,to not have; there isn't,Year 1 / Preply - L1 / Preply - L2
 雪,xuě,snow,Year 1
 下雪,xià xuě,to snow,Year 1
 雨,yǔ,rain,Year 1
@@ -278,7 +278,7 @@ Chinese,Pinyin,English,Lesson
 为什么,wèishénme,why?,Year 1
 分,fēn,to divide; minute,Year 1
 公司,gōngsī,company,Year 1 / Preply - L1
-分公司,fēngōngsī,branch office,Year 1
+分公司,fēngōngsī,branch office,Year 1 / Preply - L4
 老板,lǎobǎn,boss,Year 1
 让,ràng,to let; to make; to ask,Year 1
 工作,gōngzuò,to work; job,Year 1
@@ -286,7 +286,7 @@ Chinese,Pinyin,English,Lesson
 那,nà,that; then,Year 1
 女人,nǚrén,woman,Year 1
 如,rú,like; as if,Year 1
-如果,rúguǒ,if,Year 1
+如果,rúguǒ,if,Year 1 / Preply - L2 / Preply - L4
 也不,yě bù,neither; not either,Year 1
 去,qù,to go,Year 1
 好的,hǎo de,OK; sure,Year 1
@@ -297,7 +297,7 @@ Chinese,Pinyin,English,Lesson
 这,zhè,this,Year 1
 请,qǐng,please,Year 1
 进,jìn,to enter; to come in,Year 1
-坐,zuò,to sit,Year 1
+坐,zuò,to sit,Year 1 / Preply - L3 / Preply - L4
 亚,yà,Asia,Year 1
 系,xì,department,Year 1
 学院,xuéyuàn,college; institute,Year 1
@@ -331,7 +331,7 @@ Chinese,Pinyin,English,Lesson
 不大不小,bù dà bù xiǎo,neither big nor small,Year 1
 最,zuì,most; -est,Year 1
 最喜欢,zuì xǐhuān,to like best; favorite,Year 1
-旁边,pángbiān,next to; beside,Year 1
+旁边,pángbiān,next to; beside,Year 1 / Preply - L3
 海,hǎi,sea; ocean,Year 1
 做运动,zuò yùndòng,to exercise; to play sports,Year 1
 跑步,pǎobù,to run; to jog,Year 1
@@ -491,7 +491,7 @@ Chinese,Pinyin,English,Lesson
 上海,Shànghǎi,Shanghai,Year 1
 首都,shǒudū,capital city,Year 1
 比较,bǐjiào,relatively; to compare,Year 1
-真,zhēn,really,Year 1
+真,zhēn,really,Year 1 / Preply - L3
 意思,yìsì,meaning,Year 1
 有意思,yǒu yìsi,interesting,Year 1
 没意思,méi yìsi,boring,Year 1
@@ -520,7 +520,7 @@ Chinese,Pinyin,English,Lesson
 先生,xiānshēng,Mr.; sir; husband,Year 1
 件,jiàn,classifier for clothes,Year 1
 衬衫,chènshān,shirt,Year 1
-块,kuài,yuan,Year 1
+块,kuài,yuan,Year 1 / Preply - L3
 太贵了,tài guì le,that's too expensive!,Year 1
 便宜,piányí,cheap,Year 1
 桌子,zhuōzi,table,Year 1
@@ -564,13 +564,13 @@ Chinese,Pinyin,English,Lesson
 阿姨,āyí,aunt,Year 1
 长城,chángchéng,the Great Wall,Year 2
 故宫,gùgōng,the Forbidden City,Year 2
-旅游,lǚyóu,to travel; tourism,Preply - L1
+旅游,lǚyóu,to travel; tourism,Preply - L1 / Preply - L2 / Preply - L4
 踢足球,tī zúqiú,to play football,Preply - L1
 足球,zúqiú,football; soccer,Preply - L1
 眼睛,yǎnjing,eye; eyes,Preply - L1
 眼镜,yǎnjìng,glasses,Preply - L1
 椅子,yǐzi,chair,Preply - L1
-能,néng,can; to be able to,Preply - L1
+能,néng,can; to be able to,Preply - L1 / Preply - L2
 看见,kànjiàn,to see,Preply - L1
 听见,tīngjiàn,to hear,Preply - L1
 双,shuāng,pair (measure word),Preply - L1
@@ -586,15 +586,126 @@ Chinese,Pinyin,English,Lesson
 多久,duōjiǔ,how long,Preply - L1
 一次,yí cì,once; one time,Preply - L1
 现在,xiànzài,now,Preply - L1
-起床,qǐchuáng,to get up,Preply - L1
-打算,dǎsuan,to plan; plan,Preply - L1
-一般,yībān,usually; generally,Preply - L1
+起床,qǐchuáng,to get up,Preply - L1 / Preply - L2
+打算,dǎsuan,to plan; plan,Preply - L1 / Preply - L3
+一般,yībān,usually; generally,Preply - L1 / Preply - L2 / Preply - L4
 懂,dǒng,to understand,Preply - L1
 不到,bú dào,less than; not reaching,Preply - L1
-觉得,juéde,to feel; to think,Preply - L1
+觉得,juéde,to feel; to think,Preply - L1 / Preply - L2
 时候,shíhou,time; moment; when,Preply - L1
-一起,yìqǐ,together,Preply - L1
+一起,yìqǐ,together,Preply - L1 / Preply - L4
 只,zhī,measure word for animals,Preply - L1
 上个周,shàng gè zhōu,last week,Preply - L1
 这个周,zhè gè zhōu,this week,Preply - L1
 下个周,xià gè zhōu,next week,Preply - L1
+基本上,jīběnshang,basically; on the whole,Preply - L2
+饼干,bǐnggān,biscuit; cookie,Preply - L2
+有点儿,yǒudiǎnr,a bit; somewhat,Preply - L2
+卖光,màiguāng,to sell out,Preply - L2
+最高,zuìgāo,highest,Preply - L2
+温度,wēndù,temperature,Preply - L2
+坚持,jiānchí,to persist; to insist on,Preply - L2
+按时,ànshí,on time,Preply - L2
+比赛,bǐsài,competition; match,Preply - L2
+休假,xiūjià,to take leave; vacation,Preply - L2
+吃药,chīyào,to take medicine,Preply - L2
+生病,shēngbìng,to fall ill,Preply - L2
+休息,xiūxi,to rest,Preply - L2
+出院,chūyuàn,to leave hospital,Preply - L2
+周末,zhōumò,weekend,Preply - L2
+下班,xiàbān,to finish work,Preply - L2 / Preply - L4
+加班,jiābān,to work overtime,Preply - L2 / Preply - L4
+严格,yángé,strict,Preply - L2
+交作业,jiāo zuòyè,to hand in homework,Preply - L2
+别,bié,don't,Preply - L2
+住院,zhùyuàn,to be in hospital,Preply - L2
+及时,jíshí,in time; promptly,Preply - L2
+好好,hǎohāo,properly; well,Preply - L2
+考试,kǎoshì,exam; to take an exam,Preply - L2
+复习,fùxí,to review; to revise,Preply - L2
+多长时间,duō cháng shíjiān,how long,Preply - L2
+特别,tèbié,especially; super,Preply - L2
+出差,chūchāi,business trip,Preply - L2 / Preply - L4
+开会,kāihuì,to have a meeting,Preply - L2
+更,gèng,even more,Preply - L2
+运动,yùndòng,exercise; sport,Preply - L2
+医生,yīshēng,doctor,Preply - L2
+医院,yīyuàn,hospital,Preply - L2
+怎么,zěnme,how; why,Preply - L2
+所以,suǒyǐ,so; therefore,Preply - L2
+平时,píngshí,usually; normally,Preply - L2 / Preply - L4
+忙,máng,busy,Preply - L2
+妻子,qīzi,wife,Preply - L3
+干净,gānjìng,clean,Preply - L3
+颜色,yánsè,colour,Preply - L3
+丈夫,zhàngfu,husband,Preply - L3
+手表,shǒubiǎo,watch (wrist),Preply - L3
+报纸,bàozhǐ,newspaper,Preply - L3
+牛奶,niúnǎi,milk,Preply - L3
+房间,fángjiān,room,Preply - L3
+红色,hóngsè,red (colour),Preply - L3
+蛋糕,dàngāo,cake,Preply - L3
+份,fèn,"classifier for newspapers, meals",Preply - L3
+安排,ānpái,to arrange; plan; schedule,Preply - L3
+打扫,dǎsao,to clean up; to sweep,Preply - L3
+一边,yībiān,at the same time (一边...一边...),Preply - L3
+杯子,bēizi,cup; glass,Preply - L3
+以前,yǐqián,before; ago,Preply - L3 / Preply - L4
+一下,yīxià,a bit; just (softens a verb),Preply - L3
+粉色,fěnsè,pink,Preply - L3
+咖啡馆,kāfēiguǎn,cafe,Preply - L3
+代表,dàibiǎo,to represent; to stand for,Preply - L3
+骑,qí,"to ride (horse, bike)",Preply - L3 / Preply - L4
+开,kāi,to drive; to open,Preply - L3
+试,shì,to try,Preply - L3
+好玩,hǎowán,fun; entertaining,Preply - L3
+快递,kuàidì,express delivery; courier,Preply - L3
+刚,gāng,just (a moment ago),Preply - L3
+舒服,shūfu,comfortable,Preply - L3
+右边,yòubiān,right side,Preply - L3
+左边,zuǒbian,left side,Preply - L3
+听懂,tīngdǒng,to understand (by listening),Preply - L3
+找到,zhǎodào,to find,Preply - L3
+介绍,jièshào,to introduce,Preply - L4
+一些,yīxiē,some; a few,Preply - L4
+照顾,zhàogù,to take care of,Preply - L4
+鸡蛋,jīdàn,egg,Preply - L4
+季节,jìjié,season,Preply - L4
+讨厌,tǎoyàn,to hate; annoying,Preply - L4
+经常,jīngcháng,often,Preply - L4
+突然,tūrán,suddenly,Preply - L4
+惩罚,chéngfá,to punish,Preply - L4
+宠坏,chǒnghuài,"to spoil (a child, pet)",Preply - L4
+价格,jiàgé,price,Preply - L4
+餐厅,cāntīng,restaurant,Preply - L4
+奇怪,qíguài,strange; weird,Preply - L4
+已经,yǐjīng,already,Preply - L4
+出发,chūfā,to set off,Preply - L4
+有空儿,yǒukòngr,to be free (have time),Preply - L4
+没问题,méi wèntí,no problem,Preply - L4
+健身,jiànshēn,to work out; fitness,Preply - L4
+认识,rènshi,to know (a person); to meet,Preply - L4
+除了,chúle,apart from; except,Preply - L4
+容易,róngyì,easy,Preply - L4
+害羞,hàixiū,shy,Preply - L4
+或者,huòzhě,or (in statements),Preply - L4
+害怕,hàipà,to be afraid; scared,Preply - L4
+最近,zuìjìn,recently; lately,Preply - L4
+客户,kèhù,client; customer,Preply - L4
+大约,dàyuē,about; approximately,Preply - L4
+散步,sànbù,to take a walk,Preply - L4
+自己,zìjǐ,oneself; own,Preply - L4
+一样,yīyàng,the same,Preply - L4
+露营,lùyíng,to camp; camping,Preply - L4
+帐篷,zhàngpeng,tent,Preply - L4
+实际上,shíjìshang,actually; in fact,Preply - L4
+手术,shǒushù,surgery; operation,Preply - L4
+顺利,shùnlì,smooth; go well,Preply - L4
+危险,wēixiǎn,dangerous,Preply - L4
+打架,dǎjià,to fight,Preply - L4
+买单,mǎidān,to pay the bill,Preply - L4
+轮流,lúnliú,in turns,Preply - L4
+分开,fēnkāi,separately; to separate,Preply - L4
+比如,bǐrú,for example,Preply - L4
+以为,yǐwéi,to think (mistakenly),Preply - L4
+待,dāi,to stay,Preply - L4
